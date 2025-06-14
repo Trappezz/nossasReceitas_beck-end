@@ -1,6 +1,7 @@
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
+import services.LoginService;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -17,6 +18,8 @@ public class ServidorLogin {
     }
 
     static class LoginHandler implements HttpHandler {
+        private final LoginService loginService = new LoginService();
+
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -24,17 +27,17 @@ public class ServidorLogin {
                 return;
             }
 
-            // Lê o corpo da requisição
             InputStream is = exchange.getRequestBody();
             String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
 
             String email = extrairValor(body, "email");
             String senha = extrairValor(body, "senha");
 
-            // Simula validação
-            boolean loginValido = "admin@empresa.com".equals(email) && "1234".equals(senha);
+            boolean loginValido = loginService.autenticar(email, senha); // Agora usa o banco
 
-            String resposta = loginValido ? "{\"mensagem\": \"Login bem-sucedido\"}" : "{\"mensagem\": \"Credenciais inválidas\"}";
+            String resposta = loginValido
+                    ? "{\"mensagem\": \"Login bem-sucedido\"}"
+                    : "{\"mensagem\": \"E-mail ou senha incorretos\"}";
             int status = loginValido ? 200 : 401;
 
             exchange.getResponseHeaders().add("Content-Type", "application/json");
@@ -44,7 +47,6 @@ public class ServidorLogin {
             os.close();
         }
 
-        // Função simples para extrair valores do JSON plano
         private String extrairValor(String json, String chave) {
             String procurado = "\"" + chave + "\"";
             int start = json.indexOf(procurado);

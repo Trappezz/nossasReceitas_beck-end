@@ -26,4 +26,10 @@ document.getElementById("formLogin").addEventListener("submit", function (event)
     erroDiv.style.color = "red";
     erroDiv.textContent = "E-mail ou senha inválidos.";
   }
+
+  fetch("http://localhost:8080/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, senha })
+  })
 });
