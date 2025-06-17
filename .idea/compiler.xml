@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="conexao-postgres" />
+        <module name="nossas_receitas" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="conexao-postgres" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
