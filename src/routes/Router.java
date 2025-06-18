@@ -1,12 +1,14 @@
 package routes;
-
 import com.sun.net.httpserver.HttpServer;
-import com.sun.net.httpserver.HttpContext;
 import controllers.LoginController;
+import filters.CorsFilters;
+import com.sun.net.httpserver.HttpContext;
+import com.sun.net.httpserver.HttpExchange;
 
 public class Router {
     public static void setupRoutes(HttpServer server) {
-        server.createContext("/login", new LoginController("POST")); // POST
+        var login = server.createContext("/login", new LoginController("POST")); // POST
+        login.getFilters().add(new CorsFilters());
 
 
 
