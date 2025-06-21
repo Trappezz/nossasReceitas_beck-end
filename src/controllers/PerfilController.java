@@ -4,39 +4,48 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import services.LoginService;
+import services.PerfilService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
-public class LoginController implements HttpHandler {
+public class PerfilController implements HttpHandler {
     private final String method;
-    public LoginController(String method) {
+
+    public PerfilController(String method) {
         this.method = method;
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        final LoginService loginService = new LoginService();
+        final PerfilService perfilService = new PerfilService();
 
         if (!exchange.getRequestMethod().equalsIgnoreCase(method)) {
-            exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            exchange.sendResponseHeaders(405, -1);
             return;
         }
+
         InputStream is = exchange.getRequestBody();
         String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-
         JsonObject json = JsonParser.parseString(body).getAsJsonObject();
-        String email = json.get("email").getAsString();
-        String senha = json.get("senha").getAsString();
 
-        boolean loginValido = loginService.autenticar(email, senha); // Agora usa o banco
+        String id_funcionarios = json.get("id_funcionarios").getAsString();
 
-        String resposta = loginValido
-                ? "{\"mensagem\": \"Login bem-sucedido\"}"
-                : "{\"mensagem\": \"E-mail ou senha incorretos\"}";
-        int status = loginValido ? 200 : 401;
+        String idCargo = perfilService.obterCargo(id_funcionarios);
+
+        int status;
+        String resposta;
+
+        if (idCargo == null) {
+            status = 401;
+            resposta = "{\"mensagem\": \"Cargo não encontrado\"}";
+        } else {
+            status = 200;
+            JsonObject respostaJson = new JsonObject();
+            respostaJson.addProperty("id_cargo", idCargo);
+            resposta = respostaJson.toString();
+        }
 
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(status, resposta.getBytes().length);
