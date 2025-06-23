@@ -6,13 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class PerfilService {
-    public static String obterCargo(String id_funcionarios) {
-        String sql = "SELECT * FROM nossas_receitas.funcionarios WHERE id_funcionarios = ?";
+    public static String obterCargo(String email, String senha) {
+        String sql = "SELECT * FROM nossas_receitas.usuario WHERE email = ? AND senha = ?";
 
         try (Connection conn = ConexaoPostgres.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, Integer.parseInt(id_funcionarios));
+            stmt.setString(1, email);
+            stmt.setString(2, senha);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {

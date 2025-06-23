@@ -30,9 +30,10 @@ public class PerfilController implements HttpHandler {
         String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
         JsonObject json = JsonParser.parseString(body).getAsJsonObject();
 
-        String id_funcionarios = json.get("id_funcionarios").getAsString();
+        String email = json.get("email").getAsString();
+        String senha = json.get("senha").getAsString();
 
-        String idCargo = perfilService.obterCargo(id_funcionarios);
+        String idCargo = perfilService.obterCargo(email,  senha);
 
         int status;
         String resposta;
