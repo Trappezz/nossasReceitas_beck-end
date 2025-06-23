@@ -1,7 +1,9 @@
 package routes;
 import com.sun.net.httpserver.HttpServer;
+import controllers.IngredienteController;
 import controllers.LoginController;
 import controllers.PerfilController;
+import controllers.ReceitaController;
 import filters.CorsFilters;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
@@ -13,6 +15,19 @@ public class Router {
 
         var perfil = server.createContext("/perfil", new PerfilController("POST"));
         perfil.getFilters().add(new CorsFilters());
+
+        var ingredienteGet = server.createContext("/ingredientes/consultar", new IngredienteController("GET"));
+        ingredienteGet.getFilters().add(new CorsFilters());
+
+        var ingredientePost = server.createContext("/ingredientes/adcionar", new IngredienteController("POST"));
+        ingredientePost.getFilters().add(new CorsFilters());
+
+        var receitasGet = server.createContext("/receitas/consultar", new ReceitaController("GET"));
+        receitasGet.getFilters().add(new CorsFilters());
+
+        var receitasPost = server.createContext("/receitas/adcionar", new ReceitaController("POST"));
+        receitasPost.getFilters().add(new CorsFilters());
+
 
 
 //  EXEMPLO:
