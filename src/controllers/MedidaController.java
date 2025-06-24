@@ -4,23 +4,24 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import services.IngredienteService;
+import services.MedidaService;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
-public class IngredienteController implements HttpHandler {
+public class MedidaController implements HttpHandler {
     private final String method;
 
-    public IngredienteController(String method) {
+    public MedidaController(String method) {
         this.method = method;
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        IngredienteService ingredienteService = new IngredienteService();
+        MedidaService medidaService = new MedidaService();
 
         if (!exchange.getRequestMethod().equalsIgnoreCase(method)) {
             exchange.sendResponseHeaders(405, -1);
@@ -31,27 +32,24 @@ public class IngredienteController implements HttpHandler {
         int status;
 
         if (method.equalsIgnoreCase("GET")) {
-            resposta = ingredienteService.listarIngredientesJson();
+            List<String> medidas = medidaService.listarMedidas();
+            resposta = medidaService.converterListaParaJson(medidas);
             status = 200;
-
         } else if (method.equalsIgnoreCase("POST")) {
             InputStream is = exchange.getRequestBody();
             String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
             JsonObject json = JsonParser.parseString(body).getAsJsonObject();
 
             String nome = json.get("nome").getAsString();
-            String descricao = json.has("descricao") ? json.get("descricao").getAsString() : null;
-            int idMedida = json.get("id_medida").getAsInt();
 
-            boolean sucesso = ingredienteService.inserirIngrediente(nome, descricao, idMedida);
+            boolean sucesso = medidaService.inserirMedida(nome);
             if (sucesso) {
-                resposta = "{\"mensagem\": \"Ingrediente inserido com sucesso\"}";
+                resposta = "{\"mensagem\": \"Medida inserida com sucesso\"}";
                 status = 201;
             } else {
-                resposta = "{\"mensagem\": \"Erro ao inserir ingrediente\"}";
+                resposta = "{\"mensagem\": \"Erro ao inserir medida\"}";
                 status = 500;
             }
-
         } else {
             resposta = "{\"mensagem\": \"Método não suportado\"}";
             status = 405;
