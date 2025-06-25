@@ -1,11 +1,11 @@
 package controllers;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import services.ReceitaService;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -41,12 +41,14 @@ public class ReceitaController implements HttpHandler {
             String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
             JsonObject json = JsonParser.parseString(body).getAsJsonObject();
 
+
             String nome = json.get("nome").getAsString();
             String modoPreparo = json.get("modo_preparo").getAsString();
-            int idCozinheiro = json.get("id_cozinheiro").getAsInt();
-            int idCategoria = json.get("id_categoria").getAsInt();
+            int idCozinheiro = json.has("id_cozinheiro") ? json.get("id_cozinheiro").getAsInt() : 1; // Fixo ou vindo do token
+            int idCategoria = json.has("categoria") ? json.get("categoria").getAsInt() : json.get("id_categoria").getAsInt();
+            JsonArray ingredientes = json.getAsJsonArray("ingredientes");
 
-            boolean sucesso = receitaService.inserirReceita(nome, modoPreparo, idCozinheiro, idCategoria);
+            boolean sucesso = receitaService.inserirReceitaCompleta(nome, modoPreparo, idCozinheiro, idCategoria, ingredientes);
 
             if (sucesso) {
                 resposta = "{\"mensagem\": \"Receita inserida com sucesso\"}";
