@@ -16,19 +16,19 @@ public class Router {
         var ingredienteGet = server.createContext("/ingredientes/consultar", new IngredienteController("GET"));
         ingredienteGet.getFilters().add(new CorsFilters());
 
-        var ingredientePost = server.createContext("/ingredientes/adcionar", new IngredienteController("POST"));
+        var ingredientePost = server.createContext("/ingredientes/inserir", new IngredienteController("POST"));
         ingredientePost.getFilters().add(new CorsFilters());
 
         var receitasGet = server.createContext("/receitas/consultar", new ReceitaController("GET"));
         receitasGet.getFilters().add(new CorsFilters());
 
-        var receitasPost = server.createContext("/receitas/adcionar", new ReceitaController("POST"));
+        var receitasPost = server.createContext("/receitas/inserir", new ReceitaController("POST"));
         receitasPost.getFilters().add(new CorsFilters());
 
         var medidaGet = server.createContext("/medida/consultar", new MedidaController("GET"));
         medidaGet.getFilters().add(new CorsFilters());
 
-        var medidaPost = server.createContext("/medida/adcionar", new MedidaController("POST"));
+        var medidaPost = server.createContext("/medida/inserir", new MedidaController("POST"));
         medidaPost.getFilters().add(new CorsFilters());
 
         var restauranteGet = server.createContext("/restaurantes", new RestauranteController("GET"));
