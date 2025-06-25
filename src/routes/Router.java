@@ -50,6 +50,7 @@ public class Router {
         funcionarioUpdate.getFilters().add(new CorsFilters());
 
 
+
 //  EXEMPLO:
 //        server.createContext("/home/login", ); // POST
 //        server.createContext("/teste1", );  // GET
