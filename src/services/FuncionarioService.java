@@ -5,6 +5,7 @@ import conexao.ConexaoPostgres;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class FuncionarioService {
@@ -53,6 +54,19 @@ public class FuncionarioService {
 
         } catch (Exception e) {
             System.err.println("Erro ao adicionar funcionário: " + e.getMessage());
+            return false;
+        }
+    }
+    public boolean deletarFuncionario(int idFuncionario) {
+        String sql = "DELETE FROM nossas_receitas.funcionarios WHERE id_funcionario = ?";
+
+        try (Connection conn = ConexaoPostgres.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             stmt.setInt(1, idFuncionario);
+             int linhasAfetadas = stmt.executeUpdate();
+             return linhasAfetadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }

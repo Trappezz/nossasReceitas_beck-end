@@ -49,6 +49,9 @@ public class Router {
         var funcionarioUpdate = server.createContext("/api/funcionarios/atualizar", new EditarFuncionarioController());
         funcionarioUpdate.getFilters().add(new CorsFilters());
 
+        var funcionarioDelete = server.createContext("/api/funcionarios/excluir", new FuncionarioController("DELETE"));
+        funcionarioDelete.getFilters().add(new CorsFilters());
+
 
 
 //  EXEMPLO:
