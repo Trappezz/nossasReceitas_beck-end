@@ -42,17 +42,6 @@ public class FuncionarioController implements HttpHandler {
                 String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
                 JsonObject json = JsonParser.parseString(body).getAsJsonObject();
 
-                if (json.has("id_funcionario")) {
-                    int id = json.get("id_funcionario").getAsInt();
-                    boolean sucesso = service.deletarFuncionario(id);
-                    if (sucesso) {
-                        sendResponse(exchange, 200, "{\"message\": \"Funcionário excluído com sucesso.\"}");
-                    } else {
-                        sendResponse(exchange, 404, "{\"message\": \"Funcionário não encontrado ou erro ao excluir.\"}");
-                    }
-                    return;
-                }
-
                 if (!json.has("nome") || !json.has("data_ingresso") || !json.has("salario")
                         || !json.has("id_cargo") || !json.has("nome_fantasia")) {
                     sendResponse(exchange, 400, "{\"message\": \"Campos obrigatórios faltando.\"}");
