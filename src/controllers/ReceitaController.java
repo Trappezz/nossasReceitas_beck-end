@@ -45,7 +45,12 @@ public class ReceitaController implements HttpHandler {
             String nome = json.get("nome").getAsString();
             String modoPreparo = json.get("modo_preparo").getAsString();
             int idCozinheiro = json.has("id_cozinheiro") ? json.get("id_cozinheiro").getAsInt() : 1; // Fixo ou vindo do token
-            int idCategoria = json.has("categoria") ? json.get("categoria").getAsInt() : json.get("id_categoria").getAsInt();
+            int idCategoria = 1; // categoria padrão
+            if (json.has("categoria") && !json.get("categoria").isJsonNull()) {
+                idCategoria = json.get("categoria").getAsInt();
+            } else if (json.has("id_categoria") && !json.get("id_categoria").isJsonNull()) {
+                idCategoria = json.get("id_categoria").getAsInt();
+            }
             JsonArray ingredientes = json.getAsJsonArray("ingredientes");
 
             boolean sucesso = receitaService.inserirReceitaCompleta(nome, modoPreparo, idCozinheiro, idCategoria, ingredientes);

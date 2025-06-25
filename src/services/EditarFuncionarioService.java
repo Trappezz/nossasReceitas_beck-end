@@ -11,7 +11,7 @@ public class EditarFuncionarioService {
                                         int idCargo, double salario, String nomeFantasia, String email) {
 
         String sql = """
-            UPDATE nossas_receitas.funcionario
+            UPDATE nossas_receitas.funcionarios
             SET nome = ?, data_ingresso = ?, rg = ?, id_cargo = ?, salario = ?, nome_fantasia = ?, email = ?
             WHERE id_funcionario = ?
         """;

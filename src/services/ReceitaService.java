@@ -38,7 +38,7 @@ public class ReceitaService {
     public boolean inserirReceitaCompleta(String nome, String modoPreparo, int idCozinheiro, int idCategoria, JsonArray ingredientes) {
         String verificar = "SELECT COUNT(*) FROM nossas_receitas.receita WHERE nome = ?";
         String insertReceita = "INSERT INTO nossas_receitas.receita (nome, modo_preparo, id_cozinheiro, id_categoria) VALUES (?, ?, ?, ?) RETURNING id_receita";
-        String insertIngrediente = "INSERT INTO nossas_receitas.receita_ingrediente (id_receita, id_ingrediente, quantidade) VALUES (?, ?, ?)";
+        String insertIngrediente = "INSERT INTO nossas_receitas.ingrediente (id_receita, id_ingrediente, quantidade) VALUES (?, ?, ?)";
 
         try (Connection conn = ConexaoPostgres.conectar()) {
             conn.setAutoCommit(false); // Inicia a transação

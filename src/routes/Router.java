@@ -40,7 +40,7 @@ public class Router {
         var categoriaPost = server.createContext("/api/categorias", new CategoriaController("POST"));
         categoriaPost.getFilters().add(new CorsFilters());
 
-        var funcionarioGet = server.createContext("/funcionarios", new FuncionarioController("GET"));
+        var funcionarioGet = server.createContext("/funcionarios/get", new FuncionarioController("GET"));
         funcionarioGet.getFilters().add(new CorsFilters());
 
         var funcionarioPost = server.createContext("/funcionarios", new FuncionarioController("POST"));

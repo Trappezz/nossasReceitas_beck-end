@@ -43,7 +43,7 @@ public class FuncionarioController implements HttpHandler {
                 JsonObject json = JsonParser.parseString(body).getAsJsonObject();
 
                 if (!json.has("nome") || !json.has("data_ingresso") || !json.has("salario")
-                        || !json.has("cargo_nome") || !json.has("nome_fantasia")) {
+                        || !json.has("id_cargo") || !json.has("nome_fantasia")) {
                     sendResponse(exchange, 400, "{\"message\": \"Campos obrigatórios faltando.\"}");
                     return;
                 }
@@ -51,7 +51,7 @@ public class FuncionarioController implements HttpHandler {
                 String nome = json.get("nome").getAsString();
                 String data = json.get("data_ingresso").getAsString();
                 double salario = json.get("salario").getAsDouble();
-                String cargo = json.get("cargo_nome").getAsString();
+                int cargo = json.get("id_cargo").getAsInt();
                 String restaurante = json.get("nome_fantasia").getAsString();
 
                 boolean sucesso = service.adicionarFuncionario(nome, data, salario, cargo, restaurante);
