@@ -31,6 +31,24 @@ public class Router {
         var medidaPost = server.createContext("/medida/adcionar", new MedidaController("POST"));
         medidaPost.getFilters().add(new CorsFilters());
 
+        var restauranteGet = server.createContext("/restaurantes", new RestauranteController("GET"));
+        restauranteGet.getFilters().add(new CorsFilters());
+
+        var cozinheirosGet = server.createContext("/api/cozinheiros", new CozinheiroController("GET"));
+        cozinheirosGet.getFilters().add(new CorsFilters());
+
+        var categoriaPost = server.createContext("/api/categorias", new CategoriaController("POST"));
+        categoriaPost.getFilters().add(new CorsFilters());
+
+        var funcionarioGet = server.createContext("/funcionarios", new FuncionarioController("GET"));
+        funcionarioGet.getFilters().add(new CorsFilters());
+
+        var funcionarioPost = server.createContext("/funcionarios", new FuncionarioController("POST"));
+        funcionarioPost.getFilters().add(new CorsFilters());
+
+        var funcionarioUpdate = server.createContext("/api/funcionarios/atualizar", new EditarFuncionarioController());
+        funcionarioUpdate.getFilters().add(new CorsFilters());
+
 
 //  EXEMPLO:
 //        server.createContext("/home/login", ); // POST
